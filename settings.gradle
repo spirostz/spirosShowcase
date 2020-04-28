@@ -1,0 +1,3 @@
+rootProject.name = 'spiros'
+include 'view',
+        'core'

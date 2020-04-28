@@ -1,0 +1,30 @@
+
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'idea'
+	apply plugin: 'application'
+	sourceCompatibility = 1.8
+	mainClassName = 'com.spiros.view.SpirosApplication'
+}
+
+group = 'com.spiros'
+version = '0.0.1-SNAPSHOT'
+
+subprojects {
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter'
+		testImplementation('org.springframework.boot:spring-boot-starter-test') {
+			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		}
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
