@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/v1/weather")
 public class WeatherController {
 
+    @ApiOperation(value = "Gets weather info per city")
     @GetMapping(value = "/city/{city}")
     public Map<String, String> readCommonContentBySupplyType(@PathVariable String city) {
         final Map<String, String> result = new LinkedHashMap<>();
