@@ -5,5 +5,5 @@ plugins {
 }
 
 dependencies {
-    compile project(':repository')
+    compile project(':persistance')
 }
