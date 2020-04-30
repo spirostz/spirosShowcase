@@ -22,10 +22,14 @@ subprojects {
         implementation 'org.flywaydb:flyway-core'
         runtimeOnly 'mysql:mysql-connector-java'
 
-        testRuntimeOnly 'com.h2database:h2'
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
+
+        //Force modules to read resources from 'view' module
+        sourceSets.main.resources.srcDir('../view/src/main/resources')
+        sourceSets.test.resources.srcDir('../view/src/main/resources')
+
     }
 
     test {
