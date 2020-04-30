@@ -5,8 +5,9 @@ plugins {
 }
 
 bootJar {
-    baseName = 'spiros-view'
-    version = '1.0-SNAPSHOT'
+    archiveBaseName = 'spiros-view'
+    archiveVersion = '1.0-SNAPSHOT'
+    enabled = true
 }
 
 dependencies {

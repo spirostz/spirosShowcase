@@ -4,7 +4,14 @@ plugins {
     id 'java'
 }
 
+jar {
+    enabled = true
+}
+
 dependencies {
     compile project(':common')
     compile project(':persistence')
+
+    //Shared (eg. test properties file)
+    testCompile project(':persistence').sourceSets.test.output
 }
