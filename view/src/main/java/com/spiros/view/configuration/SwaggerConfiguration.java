@@ -30,8 +30,8 @@ public class SwaggerConfiguration {
 
     private ApiInfo createApiInfo() {
         return new ApiInfo(
-                "Spiros' sample weather application",
-                "Rest endpoints for weather forecasts",
+                "Spiros' sample application",
+                "Several Rest endpoints",
                 "v1.0",
                 null,
                 new Contact("Spiros Tzoras",
