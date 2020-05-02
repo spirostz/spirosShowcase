@@ -37,7 +37,7 @@ class UserTransformerTest {
         userEntity.setUsername("Username");
         userEntity.setCity(null);
 
-        final User user = userTransformer.fromEntityToTransfer(userEntity);
+        final User user = userTransformer.fromEntityToTransfer(userEntity).get();
 
         assertEquals(5L, user.getId());
         assertEquals(LocalDateTime.MIN, user.getCreateDateTime());
@@ -45,11 +45,13 @@ class UserTransformerTest {
         assertEquals("First", user.getFirstName());
         assertEquals("Second", user.getLastName());
         assertEquals("Username", user.getUsername());
-        Mockito.verify(cityTransformer, Mockito.never()).fromEntityToTransfer(Mockito.any());
+        Mockito.verify(cityTransformer, Mockito.times(1))
+                .fromEntityToTransfer(null);
 
         userEntity.setCity(new CityEntity());
         userTransformer.fromEntityToTransfer(userEntity);
-        Mockito.verify(cityTransformer, Mockito.times(1)).fromEntityToTransfer(userEntity.getCity());
+        Mockito.verify(cityTransformer, Mockito.times(1))
+                .fromEntityToTransfer(userEntity.getCity());
 
     }
 
@@ -64,7 +66,7 @@ class UserTransformerTest {
         user.setUsername("Username");
         user.setCity(null);
 
-        final UserEntity userEntity = userTransformer.fromTransferToEntity(user);
+        final UserEntity userEntity = userTransformer.fromTransferToEntity(user).get();
 
         assertEquals(5L, userEntity.getId());
         assertEquals(LocalDateTime.MIN, userEntity.getCreateDateTime());
@@ -72,10 +74,12 @@ class UserTransformerTest {
         assertEquals("First", userEntity.getFirstName());
         assertEquals("Second", userEntity.getLastName());
         assertEquals("Username", userEntity.getUsername());
-        Mockito.verify(cityTransformer, Mockito.never()).fromTransferToEntity(Mockito.any());
+        Mockito.verify(cityTransformer, Mockito.times(1))
+                .fromTransferToEntity(null);
 
         user.setCity(new City());
         userTransformer.fromTransferToEntity(user);
-        Mockito.verify(cityTransformer, Mockito.times(1)).fromTransferToEntity(user.getCity());
+        Mockito.verify(cityTransformer, Mockito.times(1))
+                .fromTransferToEntity(user.getCity());
     }
 }

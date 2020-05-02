@@ -4,8 +4,11 @@ package com.spiros.persistance.transformer;
 import com.spiros.common.model.User;
 import com.spiros.persistance.entity.UserEntity;
 
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class UserTransformer implements EntityTransformer<UserEntity, User> {
@@ -14,32 +17,40 @@ public class UserTransformer implements EntityTransformer<UserEntity, User> {
     private CityTransformer cityTransformer;
 
     @Override
-    public User fromEntityToTransfer(final UserEntity entity) {
-        final User user = new User();
-        user.setId(entity.getId());
-        user.setCreateDateTime(entity.getCreateDateTime());
-        user.setUpdateDateTime(entity.getUpdateDateTime());
-        user.setFirstName(entity.getFirstName());
-        user.setLastName(entity.getLastName());
-        user.setUsername(entity.getUsername());
-        if (entity.getCity() != null) {
-            user.setCity(cityTransformer.fromEntityToTransfer(entity.getCity()));
+    public Optional<User> fromEntityToTransfer(@Nullable final UserEntity entity) {
+        if (entity != null) {
+            final User user = new User();
+            user.setId(entity.getId());
+            user.setCreateDateTime(entity.getCreateDateTime());
+            user.setUpdateDateTime(entity.getUpdateDateTime());
+            user.setFirstName(entity.getFirstName());
+            user.setLastName(entity.getLastName());
+            user.setUsername(entity.getUsername());
+            user.setCity(cityTransformer
+                    .fromEntityToTransfer(entity.getCity())
+                    .orElse(null));
+            return Optional.of(user);
         }
-        return user;
+        return Optional.empty();
     }
 
     @Override
-    public UserEntity fromTransferToEntity(final User transfer) {
-        final UserEntity userEntity = new UserEntity();
-        userEntity.setId(transfer.getId());
-        userEntity.setCreateDateTime(transfer.getCreateDateTime());
-        userEntity.setUpdateDateTime(transfer.getUpdateDateTime());
-        userEntity.setFirstName(transfer.getFirstName());
-        userEntity.setLastName(transfer.getLastName());
-        userEntity.setUsername(transfer.getUsername());
-        if (transfer.getCity() != null) {
-            userEntity.setCity(cityTransformer.fromTransferToEntity(transfer.getCity()));
+    public Optional<UserEntity> fromTransferToEntity(@Nullable final User transfer) {
+        if (transfer != null) {
+
+            final UserEntity userEntity = new UserEntity();
+            userEntity.setId(transfer.getId());
+            userEntity.setCreateDateTime(transfer.getCreateDateTime());
+            userEntity.setUpdateDateTime(transfer.getUpdateDateTime());
+            userEntity.setFirstName(transfer.getFirstName());
+            userEntity.setLastName(transfer.getLastName());
+            userEntity.setUsername(transfer.getUsername());
+            userEntity.setCity(cityTransformer
+                    .fromTransferToEntity(transfer.getCity())
+                    .orElse(null));
+            return Optional.of(userEntity);
         }
-        return userEntity;
+        return Optional.empty();
     }
+
 }

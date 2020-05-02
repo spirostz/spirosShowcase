@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -27,13 +28,14 @@ class CityTransformerTest {
         cityEntity.setUpdateDateTime(LocalDateTime.MAX);
         cityEntity.setName("testName");
 
-        final City city = cityTransformer.fromEntityToTransfer(cityEntity);
+        final City city = cityTransformer.fromEntityToTransfer(cityEntity).get();
 
         assertEquals(3L, city.getId());
         assertEquals(LocalDateTime.MIN, city.getCreateDateTime());
         assertEquals(LocalDateTime.MAX, city.getUpdateDateTime());
         assertEquals("testName", city.getName());
 
+        assertFalse(cityTransformer.fromEntityToTransfer(null).isPresent());
     }
 
     @Test
@@ -44,12 +46,13 @@ class CityTransformerTest {
         city.setUpdateDateTime(LocalDateTime.MAX);
         city.setName("testName");
 
-        final CityEntity cityEntity = cityTransformer.fromTransferToEntity(city);
+        final CityEntity cityEntity = cityTransformer.fromTransferToEntity(city).get();
 
         assertEquals(3L, cityEntity.getId());
         assertEquals(LocalDateTime.MIN, cityEntity.getCreateDateTime());
         assertEquals(LocalDateTime.MAX, cityEntity.getUpdateDateTime());
         assertEquals("testName", cityEntity.getName());
 
+        assertFalse(cityTransformer.fromTransferToEntity(null).isPresent());
     }
 }
