@@ -1,5 +1,6 @@
 package com.spiros.core.service;
 
+import com.spiros.common.model.City;
 import com.spiros.common.model.User;
 import com.spiros.persistance.entity.CityEntity;
 import com.spiros.persistance.entity.UserEntity;
@@ -83,5 +84,27 @@ class UserServiceTest {
         assertEquals("Rome", user.getCity().getName());
         assertNotNull(user.getCity().getCreateDateTime());
         assertNotNull(user.getCity().getUpdateDateTime());
+    }
+
+    @Test
+    void saveUser() {
+        final User user = new User();
+        user.setFirstName("Tom");
+        user.setLastName("Black");
+        user.setUsername("bba");
+        user.setCity(new City());
+        user.getCity().setId(cityEntity.getId()); //Only id is enough to map the actual saved city
+        final User userAfterSave = userService.saveUser(user).get();
+
+        final User fetchedUser = userService.fetchById(userAfterSave.getId()).get();
+        assertNotNull(fetchedUser.getCreateDateTime());
+        assertNotNull(fetchedUser.getUpdateDateTime());
+        assertEquals("Tom", fetchedUser.getFirstName());
+        assertEquals("Black", fetchedUser.getLastName());
+        assertEquals("bba", fetchedUser.getUsername());
+
+        assertEquals(cityEntity.getId(), fetchedUser.getCity().getId());
+        assertEquals("Rome", fetchedUser.getCity().getName());
+
     }
 }

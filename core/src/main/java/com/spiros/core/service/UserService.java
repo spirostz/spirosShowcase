@@ -7,6 +7,7 @@ import com.spiros.persistance.transformer.UserTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -30,6 +31,12 @@ public class UserService {
     public Optional<User> fetchByUsername(final String username) {
         return userTransformer.fromEntityToTransfer(
                 userRepo.findByUsername(username).orElse(null));
+    }
+
+    public Optional<User> saveUser(final User user) {
+        return userTransformer.fromEntityToTransfer(userRepo
+                .save(Objects.requireNonNull(
+                        userTransformer.fromTransferToEntity(user).orElse(null))));
     }
 
 }
